@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#51386a">
+  <title>Elige asignatura y curso</title>
+  <style>
+    :root {
+      color-scheme: light;
+      font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+      color: #292431;
+      background: #f7f3fb;
+      font-synthesis: none;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background:
+        radial-gradient(circle at 8% 6%, #e9dcff 0, transparent 24rem),
+        linear-gradient(180deg, #fbf9ff, #f5f1f9);
+    }
+
+    .tarjeta {
+      width: min(480px, calc(100% - 32px));
+      margin: 32px 0;
+      padding: 32px;
+      border: 1px solid #e2d9eb;
+      border-radius: 20px;
+      background: #fff;
+      box-shadow: 0 8px 24px #39264e12;
+    }
+
+    .etiqueta {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 7px 12px;
+      border: 1px solid #d7c8e7;
+      border-radius: 999px;
+      background: #fff;
+      color: #604777;
+      font-size: .85rem;
+      font-weight: 800;
+      letter-spacing: .04em;
+      text-transform: uppercase;
+    }
+
+    h1 { margin: 16px 0 8px; color: #39264e; font-size: clamp(1.6rem, 5vw, 2.2rem); line-height: 1.15; }
+    p.intro { margin: 0 0 24px; color: #625b6c; font-size: 1.02rem; line-height: 1.5; }
+
+    .selector { display: grid; gap: 5px; margin-bottom: 18px; }
+    label { color: #51495d; font-size: .9rem; font-weight: 750; }
+
+    select { font: inherit; }
+
+    select {
+      min-height: 46px;
+      padding: 9px 38px 9px 12px;
+      border: 1px solid #cfc4da;
+      border-radius: 11px;
+      background: white;
+      color: #302a38;
+    }
+
+    select:focus-visible { outline: 3px solid #aa8ac8; outline-offset: 2px; }
+
+    .boton-comenzar {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 48px;
+      margin-top: 6px;
+      padding: 10px 16px;
+      border: 0;
+      border-radius: 11px;
+      background: #604777;
+      color: white;
+      font-weight: 800;
+      text-decoration: none;
+      cursor: pointer;
+      transition: transform .14s ease, background .14s ease;
+    }
+
+    .boton-comenzar:hover { transform: translateY(-1px); background: #4c3562; }
+    .boton-comenzar:focus-visible { outline: 3px solid #aa8ac8; outline-offset: 2px; }
+  </style>
+</head>
+<body>
+  <div class="tarjeta">
+    <span class="etiqueta">🏠 Página de inicio</span>
+    <h1>¿Qué quieres practicar hoy?</h1>
+    <p class="intro">Elige la asignatura y el curso. De momento solo hay una actividad disponible; con el tiempo se irán añadiendo más.</p>
+
+    <div class="selector">
+      <label for="asignatura">Asignatura</label>
+      <select id="asignatura">
+        <option value="matematicas">Matemáticas</option>
+      </select>
+    </div>
+
+    <div class="selector">
+      <label for="curso">Curso</label>
+      <select id="curso">
+        <option value="4-primaria">4.º de Primaria</option>
+      </select>
+    </div>
+
+    <a id="comenzar" class="boton-comenzar" href="index.html">▶️ Comenzar</a>
+  </div>
+</body>
+</html>

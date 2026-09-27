@@ -48,6 +48,7 @@
 
     .logo-github:hover { transform: translateY(-2px); background: #f1eafa; }
     .logo-github:focus-visible { outline: 3px solid #aa8ac8; outline-offset: 2px; }
+    .logo-elegir { right: 58px; }
 
     .etiqueta {
       display: inline-flex;
@@ -228,7 +229,7 @@
       body { background: white; }
       .contenedor { width: 100%; }
       header { padding: 0 0 14px; }
-      .controles, dialog, footer, .logo-github { display: none !important; }
+      .controles, dialog, footer, .logo-github, .logo-elegir { display: none !important; }
       .grupo { break-inside: avoid; box-shadow: none; }
       .grupo ol { grid-template-columns: repeat(2, minmax(0, 1fr)); }
       .solucion[hidden] { display: none !important; }
@@ -241,6 +242,7 @@
 </head>
 <body>
   <header class="contenedor">
+    <a href="inicio.html" class="logo-github logo-elegir" title="Elegir otra asignatura o curso" aria-label="Elegir otra asignatura o curso">➕</a>
     <a href="https://github.com/marconevi-lab/Educacion-de-matematicas" target="_blank" rel="noopener" class="logo-github" title="Ver el repositorio en GitHub" aria-label="Ver el repositorio en GitHub">📐</a>
     <span class="etiqueta">🧑‍🏫 Modo docente · 4.º de Primaria</span>
     <h1>Reto de cálculo mental</h1>
