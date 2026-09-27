@@ -26,7 +26,28 @@
 
     .contenedor { width: min(1080px, calc(100% - 32px)); margin: 0 auto; }
 
-    header { padding: 40px 0 26px; }
+    header { position: relative; padding: 40px 0 26px; }
+
+    .logo-github {
+      position: absolute;
+      top: 40px;
+      right: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 48px;
+      height: 48px;
+      border: 1px solid #d7c8e7;
+      border-radius: 50%;
+      background: #fff;
+      font-size: 1.4rem;
+      text-decoration: none;
+      box-shadow: 0 8px 24px #39264e12;
+      transition: transform .14s ease, background .14s ease;
+    }
+
+    .logo-github:hover { transform: translateY(-2px); background: #f1eafa; }
+    .logo-github:focus-visible { outline: 3px solid #aa8ac8; outline-offset: 2px; }
 
     .etiqueta {
       display: inline-flex;
@@ -207,7 +228,7 @@
       body { background: white; }
       .contenedor { width: 100%; }
       header { padding: 0 0 14px; }
-      .controles, dialog, footer { display: none !important; }
+      .controles, dialog, footer, .logo-github { display: none !important; }
       .grupo { break-inside: avoid; box-shadow: none; }
       .grupo ol { grid-template-columns: repeat(2, minmax(0, 1fr)); }
       .solucion[hidden] { display: none !important; }
@@ -220,6 +241,7 @@
 </head>
 <body>
   <header class="contenedor">
+    <a href="https://github.com/marconevi-lab/Educacion-de-matematicas" target="_blank" rel="noopener" class="logo-github" title="Ver el repositorio en GitHub" aria-label="Ver el repositorio en GitHub">📐</a>
     <span class="etiqueta">🧑‍🏫 Modo docente · 4.º de Primaria</span>
     <h1>Reto de cálculo mental</h1>
     <p>50 ejercicios para calentar las neuronas. Elige un nivel y ponte a calcular; las soluciones están reservadas para el profesorado.</p>
