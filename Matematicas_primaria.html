@@ -176,6 +176,23 @@
     .secundario:hover { background: #e2d8ec; }
     #error-clave { min-height: 1.4em; margin: 0; color: #a32939; font-weight: 700; }
 
+    .enlace-pista {
+      justify-self: start;
+      min-height: auto;
+      padding: 2px 0;
+      border: 0;
+      background: none;
+      color: #604777;
+      font-size: .85rem;
+      font-weight: 700;
+      text-decoration: underline;
+      cursor: pointer;
+    }
+
+    .enlace-pista:hover { color: #4c3562; }
+    .pista-clave { margin: -6px 0 0; color: #51495d; font-size: .85rem; line-height: 1.4; }
+    .pista-clave[hidden] { display: none; }
+
     footer { padding: 0 0 28px; color: #756d7e; font-size: .88rem; text-align: center; }
 
     @media (max-width: 620px) {
@@ -238,6 +255,8 @@
         <label for="clave-docente">Contraseña</label>
         <input id="clave-docente" type="password" autocomplete="current-password" required>
         <p id="error-clave" role="status" aria-live="polite"></p>
+        <button type="button" id="olvide-clave" class="enlace-pista">¿Olvidaste la clave?</button>
+        <p id="pista-clave" class="pista-clave" hidden>Pista: lo que pagas cada mes por la vivienda, seguido del año que viene.</p>
         <div class="acciones-dialogo">
           <button class="secundario" id="cancelar-clave" type="button">Cancelar</button>
           <button type="submit">Desbloquear</button>
@@ -266,6 +285,8 @@
     const formularioClave = document.querySelector("#formulario-clave");
     const campoClave = document.querySelector("#clave-docente");
     const errorClave = document.querySelector("#error-clave");
+    const botonOlvideClave = document.querySelector("#olvide-clave");
+    const pistaClave = document.querySelector("#pista-clave");
     let mostrarSoluciones = false;
     let accesoDocente = false;
     // Espacio nuevo de guardado: al abrir esta versión empieza sin ejercicios ni respuestas anteriores.
@@ -476,6 +497,7 @@
       if (!accesoDocente) {
         errorClave.textContent = "";
         campoClave.value = "";
+        pistaClave.hidden = true;
         dialogoClave.showModal();
         campoClave.focus();
         return;
@@ -502,6 +524,10 @@
     });
 
     document.querySelector("#cancelar-clave").addEventListener("click", () => dialogoClave.close());
+
+    botonOlvideClave.addEventListener("click", () => {
+      pistaClave.hidden = !pistaClave.hidden;
+    });
     const progresoInicial = recuperarProgreso();
     if (progresoInicial) {
       dificultad.value = progresoInicial.nivel || dificultad.value;
