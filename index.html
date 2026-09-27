@@ -237,7 +237,7 @@
       </div>
       <button id="nuevos" type="button">🔄 Crear otros ejercicios</button>
       <button id="continuar-sin-clave" class="continuar" type="button">▶️ Continuar mis ejercicios</button>
-      <button id="ver-soluciones" type="button">🔒 Ver soluciones</button>
+      <button id="ver-soluciones" type="button">🔒 Mostrar soluciones</button>
       <span id="resumen" class="resumen" aria-live="polite">50 ejercicios · Nivel medio</span>
       <p class="aviso-guardado">Continuar mis ejercicios no pide contraseña y guarda automáticamente tus respuestas en este navegador.</p>
     </section>
@@ -462,7 +462,7 @@
 
       const nombreNivel = dificultad.options[dificultad.selectedIndex].text.toLowerCase();
       resumen.textContent = `50 ejercicios · Nivel ${nombreNivel}`;
-      botonSoluciones.textContent = mostrarSoluciones ? "🙈 Ocultar soluciones" : "🔒 Ver soluciones";
+      botonSoluciones.textContent = mostrarSoluciones ? "🙈 Ocultar soluciones" : "🔒 Mostrar soluciones";
     }
 
     function crearOtrosEjercicios() {
@@ -507,7 +507,8 @@
       document.querySelectorAll(".solucion").forEach((solucion) => {
         solucion.hidden = !mostrarSoluciones;
       });
-      botonSoluciones.textContent = mostrarSoluciones ? "🙈 Ocultar soluciones" : "🔒 Ver soluciones";
+      botonSoluciones.textContent = mostrarSoluciones ? "🙈 Ocultar soluciones" : "🔒 Mostrar soluciones";
+      if (!mostrarSoluciones) accesoDocente = false;
     });
 
     formularioClave.addEventListener("submit", (evento) => {
