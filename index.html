@@ -1,0 +1,514 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#51386a">
+  <title>Modo docente · Cálculo mental</title>
+  <style>
+    :root {
+      color-scheme: light;
+      font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+      color: #292431;
+      background: #f7f3fb;
+      font-synthesis: none;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background:
+        radial-gradient(circle at 8% 6%, #e9dcff 0, transparent 24rem),
+        linear-gradient(180deg, #fbf9ff, #f5f1f9);
+    }
+
+    .contenedor { width: min(1080px, calc(100% - 32px)); margin: 0 auto; }
+
+    header { padding: 40px 0 26px; }
+
+    .etiqueta {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 7px 12px;
+      border: 1px solid #d7c8e7;
+      border-radius: 999px;
+      background: #fff;
+      color: #604777;
+      font-size: .85rem;
+      font-weight: 800;
+      letter-spacing: .04em;
+      text-transform: uppercase;
+    }
+
+    h1 { margin: 16px 0 8px; color: #39264e; font-size: clamp(2rem, 6vw, 3.4rem); line-height: 1.05; }
+    header p { max-width: 680px; margin: 0; color: #625b6c; font-size: 1.08rem; line-height: 1.6; }
+
+    .controles {
+      position: sticky;
+      z-index: 2;
+      top: 0;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: end;
+      gap: 12px;
+      margin: 4px 0 24px;
+      padding: 14px;
+      border: 1px solid #e2d9eb;
+      border-radius: 18px;
+      background: #fffffff2;
+      box-shadow: 0 8px 24px #39264e12;
+      backdrop-filter: blur(10px);
+    }
+
+    .selector { display: grid; gap: 5px; min-width: 190px; }
+    label { color: #51495d; font-size: .9rem; font-weight: 750; }
+
+    select, button, input { font: inherit; }
+
+    select {
+      min-height: 44px;
+      padding: 9px 38px 9px 12px;
+      border: 1px solid #cfc4da;
+      border-radius: 11px;
+      background: white;
+      color: #302a38;
+    }
+
+    button {
+      min-height: 44px;
+      padding: 10px 16px;
+      border: 0;
+      border-radius: 11px;
+      background: #604777;
+      color: white;
+      font-weight: 800;
+      cursor: pointer;
+      transition: transform .14s ease, background .14s ease;
+    }
+
+    button:hover { transform: translateY(-1px); background: #4c3562; }
+    button:focus-visible, select:focus-visible, input:focus-visible { outline: 3px solid #aa8ac8; outline-offset: 2px; }
+
+    .resumen {
+      margin-left: auto;
+      align-self: center;
+      color: #625b6c;
+      font-size: .95rem;
+      font-weight: 700;
+    }
+
+    .continuar { background: #23745a; }
+    .continuar:hover { background: #195b45; }
+    .aviso-guardado { width: 100%; margin: 0; color: #5b6970; font-size: .84rem; font-weight: 650; }
+
+    #ejercicios { display: grid; gap: 20px; padding-bottom: 48px; }
+
+    .grupo {
+      overflow: hidden;
+      border: 1px solid #e5ddec;
+      border-radius: 20px;
+      background: #fff;
+      box-shadow: 0 8px 24px #39264e0b;
+    }
+
+    .grupo h2 {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin: 0;
+      padding: 17px 20px;
+      background: #f1eafa;
+      color: #46315c;
+      font-size: 1.25rem;
+    }
+
+    .grupo h2 span { font-size: 1.35rem; }
+    .grupo ol { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 26px; margin: 0; padding: 8px 24px 18px 52px; }
+    .grupo li { display: flex; min-width: 0; align-items: center; gap: 8px; padding: 12px 4px; border-bottom: 1px dashed #ece7f1; font-size: 1.08rem; }
+    .operacion { font-variant-numeric: tabular-nums; font-weight: 700; letter-spacing: .025em; }
+
+    .respuesta {
+      width: 88px;
+      min-height: 40px;
+      padding: 6px 8px;
+      border: 2px solid #d7cfdf;
+      border-radius: 9px;
+      background: #fff;
+      color: #292431;
+      font: inherit;
+      font-variant-numeric: tabular-nums;
+      text-align: center;
+    }
+
+    .respuesta:focus { border-color: #80619c; outline: 3px solid #aa8ac833; }
+    .resultado { min-width: 1.2em; font-size: 1.35rem; font-weight: 900; line-height: 1; }
+    .resultado.correcta { color: #168348; }
+    .resultado.incorrecta { color: #c92b3d; }
+
+    .solucion {
+      display: inline-block;
+      margin-left: 8px;
+      color: #21734a;
+      font-weight: 850;
+    }
+
+    .solucion[hidden] { display: none; }
+
+    dialog {
+      width: min(420px, calc(100% - 28px));
+      padding: 0;
+      border: 1px solid #ddd2e8;
+      border-radius: 20px;
+      box-shadow: 0 24px 80px #20172b55;
+    }
+
+    dialog::backdrop { background: #25183188; backdrop-filter: blur(3px); }
+    .dialogo-cuerpo { padding: 24px; }
+    .dialogo-cuerpo h2 { margin: 0 0 7px; color: #39264e; }
+    .dialogo-cuerpo p { margin: 0 0 18px; color: #625b6c; line-height: 1.5; }
+    .dialogo-cuerpo form { display: grid; gap: 12px; }
+    .dialogo-cuerpo input { min-height: 45px; padding: 10px 12px; border: 1px solid #cfc4da; border-radius: 10px; }
+    .acciones-dialogo { display: flex; justify-content: end; gap: 8px; }
+    .secundario { background: #eee8f4; color: #40334e; }
+    .secundario:hover { background: #e2d8ec; }
+    #error-clave { min-height: 1.4em; margin: 0; color: #a32939; font-weight: 700; }
+
+    footer { padding: 0 0 28px; color: #756d7e; font-size: .88rem; text-align: center; }
+
+    @media (max-width: 620px) {
+      .controles { position: static; align-items: stretch; }
+      .selector { flex: 1 1 100%; }
+      .resumen { flex: 1 1 100%; margin: 0; }
+      .grupo ol { grid-template-columns: 1fr; }
+      header { padding-top: 28px; }
+    }
+
+    @media print {
+      body { background: white; }
+      .contenedor { width: 100%; }
+      header { padding: 0 0 14px; }
+      .controles, dialog, footer { display: none !important; }
+      .grupo { break-inside: avoid; box-shadow: none; }
+      .grupo ol { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .solucion[hidden] { display: none !important; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; }
+    }
+  </style>
+</head>
+<body>
+  <header class="contenedor">
+    <span class="etiqueta">🧑‍🏫 Modo docente · 4.º de Primaria</span>
+    <h1>Reto de cálculo mental</h1>
+    <p>50 ejercicios para calentar las neuronas. Elige un nivel y ponte a calcular; las soluciones están reservadas para el profesorado.</p>
+  </header>
+
+  <main class="contenedor">
+    <section class="controles" aria-label="Controles de los ejercicios">
+      <div class="selector">
+        <label for="dificultad">Elige la dificultad</label>
+        <select id="dificultad">
+          <option value="facil">Fácil</option>
+          <option value="medio" selected>Medio</option>
+          <option value="dificil">Difícil</option>
+        </select>
+      </div>
+      <button id="nuevos" type="button">🔄 Crear otros ejercicios</button>
+      <button id="continuar-sin-clave" class="continuar" type="button">▶️ Continuar mis ejercicios</button>
+      <button id="ver-soluciones" type="button">🔒 Ver soluciones</button>
+      <span id="resumen" class="resumen" aria-live="polite">50 ejercicios · Nivel medio</span>
+      <p class="aviso-guardado">Continuar mis ejercicios no pide contraseña y guarda automáticamente tus respuestas en este navegador.</p>
+    </section>
+
+    <div id="ejercicios" aria-live="polite"></div>
+  </main>
+
+  <footer class="contenedor">Consejo: intenta resolverlos de cabeza y explica en voz alta tu estrategia.</footer>
+
+  <dialog id="dialogo-clave" aria-labelledby="titulo-clave">
+    <div class="dialogo-cuerpo">
+      <h2 id="titulo-clave">Acceso docente</h2>
+      <p>Introduce la contraseña para mostrar las soluciones.</p>
+      <form id="formulario-clave">
+        <label for="clave-docente">Contraseña</label>
+        <input id="clave-docente" type="password" autocomplete="current-password" required>
+        <p id="error-clave" role="status" aria-live="polite"></p>
+        <div class="acciones-dialogo">
+          <button class="secundario" id="cancelar-clave" type="button">Cancelar</button>
+          <button type="submit">Desbloquear</button>
+        </div>
+      </form>
+    </div>
+  </dialog>
+
+  <script>
+    // Cambia esta clave si quieres utilizar otra en tu actividad.
+    const CLAVE_DOCENTE = "Valentín.26-27";
+
+    const grupos = [
+      { id: "sumas", titulo: "Sumas", icono: "➕", cantidad: 10 },
+      { id: "restas", titulo: "Restas", icono: "➖", cantidad: 10 },
+      { id: "multiplicaciones", titulo: "Multiplicaciones", icono: "✖️", cantidad: 20 },
+      { id: "divisiones", titulo: "Divisiones exactas", icono: "➗", cantidad: 10 }
+    ];
+
+    const dificultad = document.querySelector("#dificultad");
+    const listaEjercicios = document.querySelector("#ejercicios");
+    const resumen = document.querySelector("#resumen");
+    const botonSoluciones = document.querySelector("#ver-soluciones");
+    const botonContinuar = document.querySelector("#continuar-sin-clave");
+    const dialogoClave = document.querySelector("#dialogo-clave");
+    const formularioClave = document.querySelector("#formulario-clave");
+    const campoClave = document.querySelector("#clave-docente");
+    const errorClave = document.querySelector("#error-clave");
+    let mostrarSoluciones = false;
+    let accesoDocente = false;
+    // Espacio nuevo de guardado: al abrir esta versión empieza sin ejercicios ni respuestas anteriores.
+    const CLAVE_PROGRESO = "calculo-mental-progreso-v2";
+    let ejerciciosActuales = null;
+    let respuestasGuardadas = {};
+
+    function aleatorio(minimo, maximo) {
+      return Math.floor(Math.random() * (maximo - minimo + 1)) + minimo;
+    }
+
+    function crearEjercicios(nivel) {
+      const ejercicios = { sumas: [], restas: [], multiplicaciones: [], divisiones: [] };
+
+      let maxSuma;
+      let minResta;
+      let maxResta;
+      let minFactor;
+      let maxFactor;
+      let minDivisor;
+      let maxDivisor;
+      let maxCociente;
+
+      if (nivel === "facil") {
+        maxSuma = 100;
+        minResta = 10; maxResta = 100;
+        minFactor = 2; maxFactor = 5;
+        minDivisor = 2; maxDivisor = 10; maxCociente = 10;
+      } else if (nivel === "dificil") {
+        maxSuma = 9999;
+        minResta = 1000; maxResta = 9999;
+        minFactor = 12; maxFactor = 99;
+        minDivisor = 2; maxDivisor = 12; maxCociente = 50;
+      } else {
+        maxSuma = 999;
+        minResta = 100; maxResta = 999;
+        minFactor = 2; maxFactor = 12;
+        minDivisor = 2; maxDivisor = 12; maxCociente = 20;
+      }
+
+      for (let i = 0; i < 10; i++) {
+        const a = aleatorio(1, maxSuma - 1);
+        const b = aleatorio(1, maxSuma - a);
+        ejercicios.sumas.push({ texto: `${a} + ${b}`, respuesta: a + b });
+
+        const minuendo = aleatorio(minResta, maxResta);
+        const sustraendo = aleatorio(1, minuendo);
+        ejercicios.restas.push({ texto: `${minuendo} − ${sustraendo}`, respuesta: minuendo - sustraendo });
+      }
+
+      for (let i = 0; i < 20; i++) {
+        const a = aleatorio(minFactor, maxFactor);
+        const b = nivel === "dificil" ? aleatorio(2, 9) : aleatorio(minFactor, maxFactor);
+        ejercicios.multiplicaciones.push({ texto: `${a} × ${b}`, respuesta: a * b });
+      }
+
+      for (let i = 0; i < 10; i++) {
+        const divisor = aleatorio(minDivisor, maxDivisor);
+        const cociente = aleatorio(2, maxCociente);
+        ejercicios.divisiones.push({ texto: `${divisor * cociente} ÷ ${divisor}`, respuesta: cociente });
+      }
+
+      return ejercicios;
+    }
+
+    function guardarProgreso() {
+      try {
+        localStorage.setItem(CLAVE_PROGRESO, JSON.stringify({
+          nivel: dificultad.value,
+          ejercicios: ejerciciosActuales,
+          respuestas: respuestasGuardadas
+        }));
+      } catch {
+        // Si el navegador bloquea el almacenamiento, los ejercicios siguen funcionando.
+      }
+    }
+
+    function recuperarProgreso() {
+      try {
+        const progreso = JSON.parse(localStorage.getItem(CLAVE_PROGRESO));
+        if (progreso && progreso.ejercicios && progreso.respuestas) return progreso;
+      } catch {
+        // No hay un progreso válido guardado todavía.
+      }
+      return null;
+    }
+
+    function pintarEjercicios() {
+      const nivel = dificultad.value;
+      const ejercicios = ejerciciosActuales || crearEjercicios(nivel);
+      ejerciciosActuales = ejercicios;
+      mostrarSoluciones = accesoDocente;
+      listaEjercicios.replaceChildren();
+      let numero = 1;
+
+      for (const grupo of grupos) {
+        const seccion = document.createElement("section");
+        seccion.className = "grupo";
+
+        const titulo = document.createElement("h2");
+        titulo.innerHTML = `<span aria-hidden="true">${grupo.icono}</span>${grupo.titulo} <small>(${grupo.cantidad})</small>`;
+        seccion.append(titulo);
+
+        const lista = document.createElement("ol");
+        ejercicios[grupo.id].forEach((ejercicio, indice) => {
+          const idEjercicio = `${grupo.id}-${indice}`;
+          const elemento = document.createElement("li");
+          const operacion = document.createElement("span");
+          operacion.className = "operacion";
+          operacion.textContent = `${ejercicio.texto} =`;
+
+          const entrada = document.createElement("input");
+          entrada.className = "respuesta";
+          entrada.type = "text";
+          entrada.inputMode = "numeric";
+          entrada.pattern = "[0-9]*";
+          entrada.maxLength = 5;
+          entrada.autocomplete = "off";
+          entrada.setAttribute("aria-label", `Respuesta del ejercicio ${numero}`);
+          entrada.value = respuestasGuardadas[idEjercicio] || "";
+
+          const resultado = document.createElement("span");
+          resultado.className = "resultado";
+          resultado.setAttribute("role", "status");
+          resultado.setAttribute("aria-live", "polite");
+
+          function comprobarRespuesta() {
+            if (entrada.value === "") {
+              resultado.textContent = "";
+              resultado.className = "resultado";
+              resultado.removeAttribute("aria-label");
+              return;
+            }
+            const esCorrecta = Number(entrada.value) === ejercicio.respuesta;
+            resultado.textContent = esCorrecta ? "✓" : "✗";
+            resultado.className = `resultado ${esCorrecta ? "correcta" : "incorrecta"}`;
+            resultado.setAttribute("aria-label", esCorrecta ? "Correcto" : "Incorrecto");
+          }
+
+          entrada.addEventListener("input", () => {
+            entrada.value = entrada.value.replace(/[^0-9]/g, "").slice(0, 5);
+            respuestasGuardadas[idEjercicio] = entrada.value;
+            guardarProgreso();
+            comprobarRespuesta();
+          });
+
+          entrada.addEventListener("change", () => {
+            comprobarRespuesta();
+          });
+
+          entrada.addEventListener("keydown", (evento) => {
+            if (evento.key === "Enter") {
+              evento.preventDefault();
+              entrada.blur();
+            }
+          });
+
+          const solucion = document.createElement("span");
+          solucion.className = "solucion";
+          solucion.textContent = ejercicio.respuesta;
+          solucion.hidden = !mostrarSoluciones;
+          solucion.setAttribute("aria-label", `respuesta del ejercicio ${numero}`);
+
+          elemento.append(operacion, entrada, resultado, solucion);
+          lista.append(elemento);
+          comprobarRespuesta();
+          numero++;
+        });
+
+        seccion.append(lista);
+        listaEjercicios.append(seccion);
+      }
+
+      const nombreNivel = dificultad.options[dificultad.selectedIndex].text.toLowerCase();
+      resumen.textContent = `50 ejercicios · Nivel ${nombreNivel}`;
+      botonSoluciones.textContent = mostrarSoluciones ? "🙈 Ocultar soluciones" : "🔒 Ver soluciones";
+    }
+
+    function crearOtrosEjercicios() {
+      ejerciciosActuales = crearEjercicios(dificultad.value);
+      respuestasGuardadas = {};
+      accesoDocente = false;
+      guardarProgreso();
+      pintarEjercicios();
+    }
+
+    dificultad.addEventListener("change", crearOtrosEjercicios);
+    document.querySelector("#nuevos").addEventListener("click", crearOtrosEjercicios);
+
+    botonContinuar.addEventListener("click", () => {
+      const progreso = recuperarProgreso();
+      if (progreso) {
+        dificultad.value = progreso.nivel || dificultad.value;
+        ejerciciosActuales = progreso.ejercicios;
+        respuestasGuardadas = progreso.respuestas;
+      } else {
+        ejerciciosActuales = crearEjercicios(dificultad.value);
+        respuestasGuardadas = {};
+        guardarProgreso();
+      }
+      accesoDocente = false;
+      mostrarSoluciones = false;
+      pintarEjercicios();
+      listaEjercicios.scrollIntoView({ behavior: "smooth", block: "start" });
+    });
+
+    botonSoluciones.addEventListener("click", () => {
+      if (!accesoDocente) {
+        errorClave.textContent = "";
+        campoClave.value = "";
+        dialogoClave.showModal();
+        campoClave.focus();
+        return;
+      }
+
+      mostrarSoluciones = !mostrarSoluciones;
+      document.querySelectorAll(".solucion").forEach((solucion) => {
+        solucion.hidden = !mostrarSoluciones;
+      });
+      botonSoluciones.textContent = mostrarSoluciones ? "🙈 Ocultar soluciones" : "🔒 Ver soluciones";
+    });
+
+    formularioClave.addEventListener("submit", (evento) => {
+      evento.preventDefault();
+      if (campoClave.value === CLAVE_DOCENTE) {
+        accesoDocente = true;
+        mostrarSoluciones = true;
+        dialogoClave.close();
+        pintarEjercicios();
+      } else {
+        errorClave.textContent = "Contraseña incorrecta. Prueba otra vez.";
+        campoClave.select();
+      }
+    });
+
+    document.querySelector("#cancelar-clave").addEventListener("click", () => dialogoClave.close());
+    const progresoInicial = recuperarProgreso();
+    if (progresoInicial) {
+      dificultad.value = progresoInicial.nivel || dificultad.value;
+      ejerciciosActuales = progresoInicial.ejercicios;
+      respuestasGuardadas = progresoInicial.respuestas;
+    }
+    pintarEjercicios();
+  </script>
+</body>
+</html>
