@@ -426,7 +426,7 @@
         }
 
         const lista = document.createElement("ol");
-        ejercicios[grupo.id].forEach((ejercicio, indice) => {
+        (ejercicios[grupo.id] || []).forEach((ejercicio, indice) => {
           const idEjercicio = `${grupo.id}-${indice}`;
           const elemento = document.createElement("li");
           const operacion = document.createElement("span");
