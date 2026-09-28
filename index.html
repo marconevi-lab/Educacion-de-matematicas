@@ -149,6 +149,7 @@
     }
 
     .grupo h2 span { font-size: 1.35rem; }
+    .contador-grupo { margin-left: auto; color: #7a6f8a; font-size: .82rem; font-weight: 700; text-transform: none; letter-spacing: normal; }
     .grupo ol { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 26px; margin: 0; padding: 8px 24px 18px 52px; }
     .grupo li { display: flex; min-width: 0; align-items: center; gap: 8px; padding: 12px 4px; border-bottom: 1px dashed #ece7f1; font-size: 1.08rem; }
     .operacion { font-variant-numeric: tabular-nums; font-weight: 700; letter-spacing: .025em; }
@@ -414,7 +415,15 @@
 
         const titulo = document.createElement("h2");
         titulo.innerHTML = `<span aria-hidden="true">${grupo.icono}</span>${grupo.titulo} <small>(${grupo.cantidad})</small>`;
+        const contadorGrupo = document.createElement("span");
+        contadorGrupo.className = "contador-grupo";
+        titulo.append(contadorGrupo);
         seccion.append(titulo);
+
+        function actualizarContadorGrupo() {
+          const correctas = lista.querySelectorAll(".resultado.correcta").length;
+          contadorGrupo.textContent = `${correctas}/${grupo.cantidad} correctas`;
+        }
 
         const lista = document.createElement("ol");
         ejercicios[grupo.id].forEach((ejercicio, indice) => {
@@ -444,12 +453,14 @@
               resultado.textContent = "";
               resultado.className = "resultado";
               resultado.removeAttribute("aria-label");
+              actualizarContadorGrupo();
               return;
             }
             const esCorrecta = Number(entrada.value) === ejercicio.respuesta;
             resultado.textContent = esCorrecta ? "✓" : "✗";
             resultado.className = `resultado ${esCorrecta ? "correcta" : "incorrecta"}`;
             resultado.setAttribute("aria-label", esCorrecta ? "Correcto" : "Incorrecto");
+            actualizarContadorGrupo();
           }
 
           entrada.addEventListener("input", () => {
