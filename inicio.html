@@ -102,6 +102,7 @@
       <label for="asignatura">Asignatura</label>
       <select id="asignatura">
         <option value="matematicas">Matemáticas</option>
+        <option value="ingles">Inglés</option>
       </select>
     </div>
 
@@ -114,5 +115,25 @@
 
     <a id="comenzar" class="boton-comenzar" href="index.html">▶️ Comenzar</a>
   </div>
+
+  <script>
+    const destinos = {
+      "matematicas|4-primaria": "index.html",
+      "ingles|4-primaria": "https://marconevi-lab.github.io/Educacion-de-ingles/"
+    };
+
+    const asignatura = document.querySelector("#asignatura");
+    const curso = document.querySelector("#curso");
+    const comenzar = document.querySelector("#comenzar");
+
+    function actualizarDestino() {
+      const destino = destinos[`${asignatura.value}|${curso.value}`];
+      comenzar.href = destino || "#";
+    }
+
+    asignatura.addEventListener("change", actualizarDestino);
+    curso.addEventListener("change", actualizarDestino);
+    actualizarDestino();
+  </script>
 </body>
 </html>
