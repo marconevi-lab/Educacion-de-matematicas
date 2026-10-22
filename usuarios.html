@@ -1,0 +1,342 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#51386a">
+  <title>Gestionar usuarios</title>
+  <style>
+    :root {
+      color-scheme: light;
+      font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+      color: #292431;
+      background: #f7f3fb;
+      font-synthesis: none;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+      background:
+        radial-gradient(circle at 8% 6%, #e9dcff 0, transparent 24rem),
+        linear-gradient(180deg, #fbf9ff, #f5f1f9);
+    }
+
+    .logo-inicio {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 48px;
+      height: 48px;
+      border: 1px solid #d7c8e7;
+      border-radius: 50%;
+      background: #fff;
+      font-size: 1.4rem;
+      text-decoration: none;
+      box-shadow: 0 8px 24px #39264e12;
+      transition: transform .14s ease, background .14s ease;
+    }
+
+    .logo-inicio:hover { transform: translateY(-2px); background: #f1eafa; }
+    .logo-inicio:focus-visible { outline: 3px solid #aa8ac8; outline-offset: 2px; }
+
+    .tarjeta {
+      width: min(560px, calc(100% - 32px));
+      margin: 32px 0;
+      padding: 32px;
+      border: 1px solid #e2d9eb;
+      border-radius: 20px;
+      background: #fff;
+      box-shadow: 0 8px 24px #39264e12;
+    }
+
+    .etiqueta {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 7px 12px;
+      border: 1px solid #d7c8e7;
+      border-radius: 999px;
+      background: #fff;
+      color: #604777;
+      font-size: .85rem;
+      font-weight: 800;
+      letter-spacing: .04em;
+      text-transform: uppercase;
+    }
+
+    h1 { margin: 16px 0 8px; color: #39264e; font-size: clamp(1.5rem, 5vw, 2rem); line-height: 1.15; }
+    p.intro { margin: 0 0 20px; color: #625b6c; font-size: 1rem; line-height: 1.5; }
+
+    .campo { display: grid; gap: 5px; margin-bottom: 14px; }
+    label { color: #51495d; font-size: .9rem; font-weight: 750; }
+
+    input { font: inherit; }
+
+    input[type="text"], input[type="password"] {
+      min-height: 44px;
+      padding: 9px 12px;
+      border: 1px solid #cfc4da;
+      border-radius: 10px;
+      background: white;
+      color: #302a38;
+      width: 100%;
+    }
+
+    input:focus-visible { outline: 3px solid #aa8ac8; outline-offset: 2px; }
+
+    button {
+      min-height: 44px;
+      padding: 9px 16px;
+      border: 0;
+      border-radius: 10px;
+      background: #604777;
+      color: white;
+      font-weight: 750;
+      font: inherit;
+      cursor: pointer;
+      transition: transform .14s ease, background .14s ease;
+    }
+
+    button:hover { transform: translateY(-1px); background: #4c3562; }
+    button:focus-visible { outline: 3px solid #aa8ac8; outline-offset: 2px; }
+    button.secundario { background: #eee8f4; color: #40334e; }
+    button.secundario:hover { background: #e2d8ec; }
+
+    .error { min-height: 1.2em; margin: 6px 0 0; color: #a32939; font-size: .85rem; font-weight: 700; }
+    .aviso { min-height: 1.2em; margin: 6px 0 0; color: #168348; font-size: .85rem; font-weight: 700; }
+    .estado-sesion { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 20px; padding-bottom: 16px; border-bottom: 1px dashed #e2d9eb; color: #46315c; font-weight: 750; font-size: .95rem; }
+
+    .lista-usuarios { display: grid; gap: 10px; margin: 0 0 24px; padding: 0; list-style: none; }
+    .fila-usuario {
+      display: grid;
+      grid-template-columns: 1fr auto auto auto;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 14px;
+      border: 1px solid #e5ddec;
+      border-radius: 12px;
+      background: #faf8fc;
+    }
+    .fila-usuario .nombre { font-weight: 750; color: #39264e; }
+    .fila-usuario .rol { color: #8a8195; font-size: .82rem; }
+    .fila-usuario input[type="password"] { min-height: 38px; width: 150px; }
+    .fila-usuario button { min-height: 38px; padding: 7px 10px; font-size: .85rem; }
+    .fila-usuario button.peligro { background: #fde8e8; color: #a32939; }
+    .fila-usuario button.peligro:hover { background: #fad1d1; }
+
+    .seccion { margin-top: 22px; padding-top: 18px; border-top: 1px dashed #e2d9eb; }
+    .seccion h2 { margin: 0 0 10px; color: #39264e; font-size: 1.1rem; }
+
+    @media (max-width: 580px) {
+      .fila-usuario { grid-template-columns: 1fr; }
+      .fila-usuario input[type="password"] { width: 100%; }
+    }
+  </style>
+</head>
+<body>
+  <a href="inicio.html" class="logo-inicio" title="Volver al inicio" aria-label="Volver al inicio">🏠</a>
+
+  <div class="tarjeta">
+    <span class="etiqueta">👤 Gestión de usuarios</span>
+    <h1>Usuarios y contraseñas</h1>
+    <p class="intro">Solo el usuario <strong>admin</strong> puede crear usuarios nuevos y cambiar contraseñas.</p>
+
+    <div id="vista-login">
+      <div class="campo">
+        <label for="usuario-login">Usuario</label>
+        <input id="usuario-login" type="text" autocomplete="username">
+      </div>
+      <div class="campo">
+        <label for="clave-login">Contraseña</label>
+        <input id="clave-login" type="password" autocomplete="current-password">
+      </div>
+      <p id="error-login" class="error"></p>
+      <button id="boton-login" type="button">Iniciar sesión</button>
+    </div>
+
+    <div id="vista-gestion" hidden>
+      <div class="estado-sesion">
+        <span>Sesión iniciada como <strong id="nombre-sesion"></strong></span>
+        <button id="boton-logout" type="button" class="secundario">Cerrar sesión</button>
+      </div>
+
+      <div id="vista-no-admin" hidden>
+        <p class="intro">Tu usuario no tiene permiso para gestionar contraseñas ni crear usuarios. Solo <strong>admin</strong> puede hacerlo.</p>
+      </div>
+
+      <div id="vista-admin" hidden>
+        <ul id="lista-usuarios" class="lista-usuarios"></ul>
+
+        <div class="seccion">
+          <h2>➕ Crear nuevo usuario</h2>
+          <div class="campo">
+            <label for="usuario-nuevo">Usuario</label>
+            <input id="usuario-nuevo" type="text" autocomplete="off">
+          </div>
+          <div class="campo">
+            <label for="clave-nuevo">Contraseña</label>
+            <input id="clave-nuevo" type="password" autocomplete="off">
+          </div>
+          <p id="error-crear" class="error"></p>
+          <button id="boton-crear-usuario" type="button">Crear usuario</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const CLAVE_USUARIOS = "edu-usuarios";
+    const CLAVE_SESION = "edu-sesion";
+
+    function cargarUsuarios() {
+      try {
+        const guardado = JSON.parse(localStorage.getItem(CLAVE_USUARIOS));
+        if (Array.isArray(guardado) && guardado.length) return guardado;
+      } catch {
+        // Si no hay usuarios guardados o están corruptos, se recrea el admin inicial.
+      }
+      const iniciales = [{ usuario: "admin", clave: "Imanes.26-27", rol: "admin" }];
+      localStorage.setItem(CLAVE_USUARIOS, JSON.stringify(iniciales));
+      return iniciales;
+    }
+
+    function guardarUsuarios(lista) {
+      localStorage.setItem(CLAVE_USUARIOS, JSON.stringify(lista));
+    }
+
+    function obtenerSesion() {
+      try {
+        return JSON.parse(localStorage.getItem(CLAVE_SESION));
+      } catch {
+        return null;
+      }
+    }
+
+    const vistaLogin = document.querySelector("#vista-login");
+    const vistaGestion = document.querySelector("#vista-gestion");
+    const vistaNoAdmin = document.querySelector("#vista-no-admin");
+    const vistaAdmin = document.querySelector("#vista-admin");
+    const nombreSesion = document.querySelector("#nombre-sesion");
+    const errorLogin = document.querySelector("#error-login");
+    const errorCrear = document.querySelector("#error-crear");
+    const listaUsuarios = document.querySelector("#lista-usuarios");
+
+    function pintarListaUsuarios() {
+      const usuarios = cargarUsuarios();
+      listaUsuarios.replaceChildren();
+      usuarios.forEach((u) => {
+        const fila = document.createElement("li");
+        fila.className = "fila-usuario";
+
+        const nombre = document.createElement("span");
+        nombre.innerHTML = `<span class="nombre">${u.usuario}</span> <span class="rol">(${u.rol})</span>`;
+
+        const campoClave = document.createElement("input");
+        campoClave.type = "password";
+        campoClave.placeholder = "Nueva contraseña";
+        campoClave.autocomplete = "new-password";
+
+        const botonActualizar = document.createElement("button");
+        botonActualizar.type = "button";
+        botonActualizar.textContent = "Actualizar clave";
+        botonActualizar.addEventListener("click", () => {
+          const nuevaClave = campoClave.value;
+          if (!nuevaClave) return;
+          const lista = cargarUsuarios();
+          const objetivo = lista.find((x) => x.usuario === u.usuario);
+          if (objetivo) {
+            objetivo.clave = nuevaClave;
+            guardarUsuarios(lista);
+            campoClave.value = "";
+            campoClave.placeholder = "¡Actualizada!";
+            setTimeout(() => { campoClave.placeholder = "Nueva contraseña"; }, 1500);
+          }
+        });
+
+        fila.append(nombre, campoClave, botonActualizar);
+
+        if (u.usuario !== "admin") {
+          const botonEliminar = document.createElement("button");
+          botonEliminar.type = "button";
+          botonEliminar.className = "peligro";
+          botonEliminar.textContent = "Eliminar";
+          botonEliminar.addEventListener("click", () => {
+            if (!confirm(`¿Seguro que quieres eliminar al usuario "${u.usuario}"?`)) return;
+            const lista = cargarUsuarios().filter((x) => x.usuario !== u.usuario);
+            guardarUsuarios(lista);
+            pintarListaUsuarios();
+          });
+          fila.append(botonEliminar);
+        }
+
+        listaUsuarios.append(fila);
+      });
+    }
+
+    function pintarSesion() {
+      const sesion = obtenerSesion();
+      vistaLogin.hidden = !!sesion;
+      vistaGestion.hidden = !sesion;
+      if (!sesion) return;
+      nombreSesion.textContent = sesion.usuario;
+      const esAdmin = sesion.rol === "admin";
+      vistaAdmin.hidden = !esAdmin;
+      vistaNoAdmin.hidden = esAdmin;
+      if (esAdmin) pintarListaUsuarios();
+    }
+
+    document.querySelector("#boton-login").addEventListener("click", () => {
+      const usuario = document.querySelector("#usuario-login").value.trim();
+      const clave = document.querySelector("#clave-login").value;
+      const usuarios = cargarUsuarios();
+      const encontrado = usuarios.find((u) => u.usuario === usuario && u.clave === clave);
+      if (!encontrado) {
+        errorLogin.textContent = "Usuario o contraseña incorrectos.";
+        return;
+      }
+      errorLogin.textContent = "";
+      localStorage.setItem(CLAVE_SESION, JSON.stringify({ usuario: encontrado.usuario, rol: encontrado.rol }));
+      pintarSesion();
+    });
+
+    document.querySelector("#boton-logout").addEventListener("click", () => {
+      localStorage.removeItem(CLAVE_SESION);
+      pintarSesion();
+    });
+
+    document.querySelector("#boton-crear-usuario").addEventListener("click", () => {
+      const sesion = obtenerSesion();
+      if (!sesion || sesion.rol !== "admin") return;
+      const usuario = document.querySelector("#usuario-nuevo").value.trim();
+      const clave = document.querySelector("#clave-nuevo").value;
+      if (!usuario || !clave) {
+        errorCrear.textContent = "Rellena usuario y contraseña.";
+        return;
+      }
+      const usuarios = cargarUsuarios();
+      if (usuarios.some((u) => u.usuario === usuario)) {
+        errorCrear.textContent = "Ese usuario ya existe.";
+        return;
+      }
+      usuarios.push({ usuario, clave, rol: "profesor" });
+      guardarUsuarios(usuarios);
+      errorCrear.textContent = "";
+      document.querySelector("#usuario-nuevo").value = "";
+      document.querySelector("#clave-nuevo").value = "";
+      pintarListaUsuarios();
+    });
+
+    cargarUsuarios();
+    pintarSesion();
+  </script>
+</body>
+</html>

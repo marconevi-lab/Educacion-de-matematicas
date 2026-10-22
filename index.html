@@ -530,8 +530,22 @@
       listaEjercicios.scrollIntoView({ behavior: "smooth", block: "start" });
     });
 
+    function obtenerSesion() {
+      try {
+        return JSON.parse(localStorage.getItem("edu-sesion"));
+      } catch {
+        return null;
+      }
+    }
+
     botonSoluciones.addEventListener("click", () => {
       if (!accesoDocente) {
+        if (obtenerSesion()) {
+          accesoDocente = true;
+          mostrarSoluciones = true;
+          pintarEjercicios();
+          return;
+        }
         errorClave.textContent = "";
         campoClave.value = "";
         pistaClave.hidden = true;

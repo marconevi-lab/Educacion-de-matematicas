@@ -90,9 +90,59 @@
 
     .boton-comenzar:hover { transform: translateY(-1px); background: #4c3562; }
     .boton-comenzar:focus-visible { outline: 3px solid #aa8ac8; outline-offset: 2px; }
+
+    .sesion { margin-top: 20px; padding-top: 18px; border-top: 1px dashed #e2d9eb; }
+    .sesion summary { color: #604777; font-weight: 750; font-size: .92rem; cursor: pointer; }
+    .campo-sesion { display: grid; gap: 5px; margin-top: 12px; }
+    .campo-sesion input {
+      min-height: 42px;
+      padding: 8px 12px;
+      border: 1px solid #cfc4da;
+      border-radius: 10px;
+      font: inherit;
+    }
+    .boton-sesion {
+      min-height: 42px;
+      margin-top: 10px;
+      padding: 8px 14px;
+      border: 0;
+      border-radius: 10px;
+      background: #604777;
+      color: white;
+      font-weight: 750;
+      font: inherit;
+      cursor: pointer;
+    }
+    .boton-sesion:hover { background: #4c3562; }
+    .boton-sesion.secundario { background: #eee8f4; color: #40334e; }
+    .boton-sesion.secundario:hover { background: #e2d8ec; }
+    .error-sesion { min-height: 1.2em; margin: 8px 0 0; color: #a32939; font-size: .85rem; font-weight: 700; }
+    .estado-sesion { color: #46315c; font-weight: 750; font-size: .92rem; }
+
+    .logo-usuarios {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 48px;
+      height: 48px;
+      border: 1px solid #d7c8e7;
+      border-radius: 50%;
+      background: #fff;
+      font-size: 1.4rem;
+      text-decoration: none;
+      box-shadow: 0 8px 24px #39264e12;
+      transition: transform .14s ease, background .14s ease;
+    }
+
+    .logo-usuarios:hover { transform: translateY(-2px); background: #f1eafa; }
+    .logo-usuarios:focus-visible { outline: 3px solid #aa8ac8; outline-offset: 2px; }
   </style>
 </head>
 <body>
+  <a href="usuarios.html" class="logo-usuarios" title="Gestionar usuarios" aria-label="Gestionar usuarios">👤</a>
   <div class="tarjeta">
     <span class="etiqueta">🏠 Página de inicio</span>
     <h1>¿Qué quieres practicar hoy?</h1>
@@ -115,6 +165,27 @@
     </div>
 
     <a id="comenzar" class="boton-comenzar" href="index.html">▶️ Comenzar</a>
+
+    <details class="sesion" id="panel-sesion">
+      <summary>🔑 Acceso docente (opcional)</summary>
+      <div id="vista-invitado">
+        <div class="campo-sesion">
+          <label for="usuario-login">Usuario</label>
+          <input id="usuario-login" type="text" autocomplete="username">
+        </div>
+        <div class="campo-sesion">
+          <label for="clave-login">Contraseña</label>
+          <input id="clave-login" type="password" autocomplete="current-password">
+        </div>
+        <p id="error-login" class="error-sesion"></p>
+        <button id="boton-login" type="button" class="boton-sesion">Iniciar sesión</button>
+      </div>
+
+      <div id="vista-sesion" hidden>
+        <p class="estado-sesion">Sesión iniciada como <span id="nombre-sesion"></span></p>
+        <button id="boton-logout" type="button" class="boton-sesion secundario">Cerrar sesión</button>
+      </div>
+    </details>
   </div>
 
   <script>
@@ -136,6 +207,64 @@
     asignatura.addEventListener("change", actualizarDestino);
     curso.addEventListener("change", actualizarDestino);
     actualizarDestino();
+
+    // Gestión de usuarios (guardada en este navegador, sin servidor)
+    const CLAVE_USUARIOS = "edu-usuarios";
+    const CLAVE_SESION = "edu-sesion";
+
+    function cargarUsuarios() {
+      try {
+        const guardado = JSON.parse(localStorage.getItem(CLAVE_USUARIOS));
+        if (Array.isArray(guardado) && guardado.length) return guardado;
+      } catch {
+        // Si no hay usuarios guardados o están corruptos, se recrea el admin inicial.
+      }
+      const iniciales = [{ usuario: "admin", clave: "Imanes.26-27", rol: "admin" }];
+      localStorage.setItem(CLAVE_USUARIOS, JSON.stringify(iniciales));
+      return iniciales;
+    }
+
+    function obtenerSesion() {
+      try {
+        return JSON.parse(localStorage.getItem(CLAVE_SESION));
+      } catch {
+        return null;
+      }
+    }
+
+    const vistaInvitado = document.querySelector("#vista-invitado");
+    const vistaSesion = document.querySelector("#vista-sesion");
+    const nombreSesion = document.querySelector("#nombre-sesion");
+    const errorLogin = document.querySelector("#error-login");
+
+    function pintarSesion() {
+      const sesion = obtenerSesion();
+      vistaInvitado.hidden = !!sesion;
+      vistaSesion.hidden = !sesion;
+      if (sesion) nombreSesion.textContent = sesion.usuario;
+    }
+
+    document.querySelector("#boton-login").addEventListener("click", () => {
+      const usuario = document.querySelector("#usuario-login").value.trim();
+      const clave = document.querySelector("#clave-login").value;
+      const usuarios = cargarUsuarios();
+      const encontrado = usuarios.find((u) => u.usuario === usuario && u.clave === clave);
+      if (!encontrado) {
+        errorLogin.textContent = "Usuario o contraseña incorrectos.";
+        return;
+      }
+      errorLogin.textContent = "";
+      localStorage.setItem(CLAVE_SESION, JSON.stringify({ usuario: encontrado.usuario, rol: encontrado.rol }));
+      pintarSesion();
+    });
+
+    document.querySelector("#boton-logout").addEventListener("click", () => {
+      localStorage.removeItem(CLAVE_SESION);
+      pintarSesion();
+    });
+
+    cargarUsuarios();
+    pintarSesion();
   </script>
 </body>
 </html>
