@@ -93,6 +93,26 @@
 
     input:focus-visible { outline: 3px solid #aa8ac8; outline-offset: 2px; }
 
+    .campo-clave { position: relative; }
+    .campo-clave input { padding-right: 40px; }
+    .boton-ver-clave {
+      position: absolute;
+      top: 50%;
+      right: 4px;
+      transform: translateY(-50%);
+      width: 32px;
+      height: 32px;
+      min-height: auto;
+      padding: 0;
+      border: 0;
+      background: none;
+      font-size: 1.1rem;
+      line-height: 1;
+      color: #8a8195;
+      cursor: pointer;
+    }
+    .boton-ver-clave:hover { color: #604777; transform: translateY(-50%); background: none; }
+
     button {
       min-height: 44px;
       padding: 9px 16px;
@@ -128,7 +148,7 @@
     }
     .fila-usuario .nombre { font-weight: 750; color: #39264e; }
     .fila-usuario .rol { color: #8a8195; font-size: .82rem; }
-    .fila-usuario input[type="password"] { min-height: 38px; width: 150px; }
+    .fila-usuario input { min-height: 38px; width: 150px; }
     .fila-usuario button { min-height: 38px; padding: 7px 10px; font-size: .85rem; }
     .fila-usuario button.peligro { background: #fde8e8; color: #a32939; }
     .fila-usuario button.peligro:hover { background: #fad1d1; }
@@ -138,7 +158,7 @@
 
     @media (max-width: 580px) {
       .fila-usuario { grid-template-columns: 1fr; }
-      .fila-usuario input[type="password"] { width: 100%; }
+      .fila-usuario input { width: 100%; }
     }
   </style>
 </head>
@@ -157,7 +177,10 @@
       </div>
       <div class="campo">
         <label for="clave-login">Contraseña</label>
-        <input id="clave-login" type="password" autocomplete="current-password">
+        <div class="campo-clave">
+          <input id="clave-login" type="password" autocomplete="current-password">
+          <button type="button" class="boton-ver-clave" data-clave="clave-login" title="Mostrar contraseña" aria-label="Mostrar contraseña">👁️</button>
+        </div>
       </div>
       <p id="error-login" class="error"></p>
       <button id="boton-login" type="button">Iniciar sesión</button>
@@ -184,7 +207,7 @@
           </div>
           <div class="campo">
             <label for="clave-nuevo">Contraseña</label>
-            <input id="clave-nuevo" type="password" autocomplete="off">
+            <input id="clave-nuevo" type="text" autocomplete="off">
           </div>
           <p id="error-crear" class="error"></p>
           <button id="boton-crear-usuario" type="button">Crear usuario</button>
@@ -241,7 +264,7 @@
         nombre.innerHTML = `<span class="nombre">${u.usuario}</span> <span class="rol">(${u.rol})</span>`;
 
         const campoClave = document.createElement("input");
-        campoClave.type = "password";
+        campoClave.type = "text";
         campoClave.placeholder = "Nueva contraseña";
         campoClave.autocomplete = "new-password";
 
@@ -333,6 +356,21 @@
       document.querySelector("#usuario-nuevo").value = "";
       document.querySelector("#clave-nuevo").value = "";
       pintarListaUsuarios();
+    });
+
+    function alternarVisibilidadClave(campo, boton) {
+      const verClave = campo.type === "password";
+      campo.type = verClave ? "text" : "password";
+      boton.textContent = verClave ? "🙈" : "👁️";
+      boton.title = verClave ? "Ocultar contraseña" : "Mostrar contraseña";
+      boton.setAttribute("aria-label", boton.title);
+    }
+
+    document.querySelectorAll(".boton-ver-clave[data-clave]").forEach((boton) => {
+      boton.addEventListener("click", () => {
+        const campo = document.querySelector(`#${boton.dataset.clave}`);
+        alternarVisibilidadClave(campo, boton);
+      });
     });
 
     cargarUsuarios();

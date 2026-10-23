@@ -101,6 +101,25 @@
       border-radius: 10px;
       font: inherit;
     }
+    .campo-clave { position: relative; }
+    .campo-clave input { padding-right: 40px; width: 100%; }
+    .boton-ver-clave {
+      position: absolute;
+      top: 50%;
+      right: 4px;
+      transform: translateY(-50%);
+      width: 32px;
+      height: 32px;
+      min-height: auto;
+      padding: 0;
+      border: 0;
+      background: none;
+      font-size: 1.1rem;
+      line-height: 1;
+      color: #8a8195;
+      cursor: pointer;
+    }
+    .boton-ver-clave:hover { color: #604777; }
     .boton-sesion {
       min-height: 42px;
       margin-top: 10px;
@@ -175,7 +194,10 @@
         </div>
         <div class="campo-sesion">
           <label for="clave-login">Contraseña</label>
-          <input id="clave-login" type="password" autocomplete="current-password">
+          <div class="campo-clave">
+            <input id="clave-login" type="password" autocomplete="current-password">
+            <button type="button" class="boton-ver-clave" data-clave="clave-login" title="Mostrar contraseña" aria-label="Mostrar contraseña">👁️</button>
+          </div>
         </div>
         <p id="error-login" class="error-sesion"></p>
         <button id="boton-login" type="button" class="boton-sesion">Iniciar sesión</button>
@@ -261,6 +283,17 @@
     document.querySelector("#boton-logout").addEventListener("click", () => {
       localStorage.removeItem(CLAVE_SESION);
       pintarSesion();
+    });
+
+    document.querySelectorAll(".boton-ver-clave").forEach((boton) => {
+      boton.addEventListener("click", () => {
+        const campo = document.querySelector(`#${boton.dataset.clave}`);
+        const verClave = campo.type === "password";
+        campo.type = verClave ? "text" : "password";
+        boton.textContent = verClave ? "🙈" : "👁️";
+        boton.title = verClave ? "Ocultar contraseña" : "Mostrar contraseña";
+        boton.setAttribute("aria-label", boton.title);
+      });
     });
 
     cargarUsuarios();
