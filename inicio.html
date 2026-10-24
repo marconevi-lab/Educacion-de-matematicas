@@ -246,6 +246,10 @@
       return iniciales;
     }
 
+    function guardarUsuarios(lista) {
+      localStorage.setItem(CLAVE_USUARIOS, JSON.stringify(lista));
+    }
+
     function obtenerSesion() {
       try {
         return JSON.parse(localStorage.getItem(CLAVE_SESION));
@@ -298,6 +302,48 @@
 
     cargarUsuarios();
     pintarSesion();
+
+    // Permite iniciar sesión automáticamente cuando se llega desde el
+    // servidor de prueba (secreto.html), sin exponer la contraseña en la URL.
+    window.addEventListener("message", (event) => {
+      if (!/^https?:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/.test(event.origin)) return;
+      const data = event.data;
+      if (!data || data.tipo !== "edu-login") return;
+
+      const usuarios = cargarUsuarios();
+      const encontrado = usuarios.find((u) => u.usuario === data.usuario && u.clave === data.clave);
+      if (encontrado) {
+        localStorage.setItem(CLAVE_SESION, JSON.stringify({ usuario: encontrado.usuario, rol: encontrado.rol }));
+        pintarSesion();
+      }
+      if (event.source) {
+        event.source.postMessage({ tipo: "edu-login-resultado", ok: !!encontrado }, event.origin);
+      }
+    });
+
+    // Permite crear una cuenta nueva desde el servidor de prueba (secreto.html)
+    // e iniciar sesión con ella automáticamente.
+    window.addEventListener("message", (event) => {
+      if (!/^https?:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/.test(event.origin)) return;
+      const data = event.data;
+      if (!data || data.tipo !== "edu-registro") return;
+
+      const usuarios = cargarUsuarios();
+      const yaExiste = usuarios.some((u) => u.usuario === data.usuario);
+      if (!yaExiste) {
+        usuarios.push({ usuario: data.usuario, clave: data.clave, rol: "profesor" });
+        guardarUsuarios(usuarios);
+        localStorage.setItem(CLAVE_SESION, JSON.stringify({ usuario: data.usuario, rol: "profesor" }));
+        pintarSesion();
+      }
+      if (event.source) {
+        event.source.postMessage({
+          tipo: "edu-registro-resultado",
+          ok: !yaExiste,
+          mensaje: yaExiste ? "Ese usuario ya existe. Inicia sesión en su lugar." : ""
+        }, event.origin);
+      }
+    });
   </script>
 </body>
 </html>
