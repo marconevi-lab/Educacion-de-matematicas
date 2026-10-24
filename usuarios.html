@@ -48,6 +48,27 @@
     .logo-inicio:hover { transform: translateY(-2px); background: #f1eafa; }
     .logo-inicio:focus-visible { outline: 3px solid #aa8ac8; outline-offset: 2px; }
 
+    .logo-secreto {
+      position: fixed;
+      top: 20px;
+      right: 78px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 48px;
+      height: 48px;
+      border: 1px solid #d7c8e7;
+      border-radius: 50%;
+      background: #fff;
+      font-size: 1.4rem;
+      text-decoration: none;
+      box-shadow: 0 8px 24px #39264e12;
+      transition: transform .14s ease, background .14s ease;
+    }
+
+    .logo-secreto:hover { transform: translateY(-2px); background: #f1eafa; }
+    .logo-secreto:focus-visible { outline: 3px solid #aa8ac8; outline-offset: 2px; }
+
     .tarjeta {
       width: min(560px, calc(100% - 32px));
       margin: 32px 0;
@@ -164,6 +185,7 @@
 </head>
 <body>
   <a href="inicio.html" class="logo-inicio" title="Volver al inicio" aria-label="Volver al inicio">🏠</a>
+  <a href="https://marconevi-lab.github.io/Portal-secreto-edumath/secreto.html" class="logo-secreto" title="Crear usuario (acceso secreto)" aria-label="Crear usuario (acceso secreto)">🔒</a>
 
   <div class="tarjeta">
     <span class="etiqueta">👤 Gestión de usuarios</span>
