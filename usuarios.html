@@ -5,16 +5,166 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#51386a">
   <title>Gestionar usuarios</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fontsource-opendyslexic/5.3.0/index.css">
   <style>
     :root {
       color-scheme: light;
       font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
-      color: #292431;
-      background: #f7f3fb;
       font-synthesis: none;
+
+      --color-texto: #292431;
+      --color-fondo-1: #e9dcff;
+      --color-fondo-2: #fbf9ff;
+      --color-fondo-3: #f5f1f9;
+      --color-tarjeta-bg: #fff;
+      --color-tarjeta-borde: #e2d9eb;
+      --color-tarjeta-sombra: #39264e12;
+      --color-etiqueta-borde: #d7c8e7;
+      --color-acento: #604777;
+      --color-acento-hover: #4c3562;
+      --color-titulo: #39264e;
+      --color-texto-suave: #625b6c;
+      --color-label: #51495d;
+      --color-input-borde: #cfc4da;
+      --color-input-bg: #fff;
+      --color-input-texto: #302a38;
+      --color-focus: #aa8ac8;
+      --color-boton-secundario-bg: #eee8f4;
+      --color-boton-secundario-texto: #40334e;
+      --color-boton-secundario-hover: #e2d8ec;
+      --color-error: #a32939;
+      --color-aviso: #168348;
+      --color-estado: #46315c;
+      --color-icono-hover: #f1eafa;
+      --color-fila-bg: #faf8fc;
+      --color-fila-borde: #e5ddec;
+      --color-rol: #8a8195;
+      --color-peligro-bg: #fde8e8;
+      --color-peligro-texto: #a32939;
+      --color-peligro-hover: #fad1d1;
+      --tam-texto: 1;
+    }
+
+    :root[data-theme="dark"] {
+      color-scheme: dark;
+      --color-texto: #e7e1ef;
+      --color-fondo-1: #3a2b52;
+      --color-fondo-2: #1c1724;
+      --color-fondo-3: #221b2c;
+      --color-tarjeta-bg: #2a2234;
+      --color-tarjeta-borde: #40334e;
+      --color-tarjeta-sombra: #00000040;
+      --color-etiqueta-borde: #4d3c5c;
+      --color-acento: #9a7ec4;
+      --color-acento-hover: #b399db;
+      --color-titulo: #e9dcff;
+      --color-texto-suave: #c3b8cf;
+      --color-label: #cfc4da;
+      --color-input-borde: #4d3c5c;
+      --color-input-bg: #221b2c;
+      --color-input-texto: #e7e1ef;
+      --color-focus: #b399db;
+      --color-boton-secundario-bg: #3a2f47;
+      --color-boton-secundario-texto: #e7e1ef;
+      --color-boton-secundario-hover: #473a57;
+      --color-error: #f28b9d;
+      --color-aviso: #8ee6ad;
+      --color-estado: #d9cce7;
+      --color-icono-hover: #3a2f47;
+      --color-fila-bg: #241d2d;
+      --color-fila-borde: #40334e;
+      --color-rol: #a79bb3;
+      --color-peligro-bg: #4a2630;
+      --color-peligro-texto: #f28b9d;
+      --color-peligro-hover: #5c2e3b;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root:not([data-theme="light"]):not([data-theme="dark"]) {
+        color-scheme: dark;
+        --color-texto: #e7e1ef;
+        --color-fondo-1: #3a2b52;
+        --color-fondo-2: #1c1724;
+        --color-fondo-3: #221b2c;
+        --color-tarjeta-bg: #2a2234;
+        --color-tarjeta-borde: #40334e;
+        --color-tarjeta-sombra: #00000040;
+        --color-etiqueta-borde: #4d3c5c;
+        --color-acento: #9a7ec4;
+        --color-acento-hover: #b399db;
+        --color-titulo: #e9dcff;
+        --color-texto-suave: #c3b8cf;
+        --color-label: #cfc4da;
+        --color-input-borde: #4d3c5c;
+        --color-input-bg: #221b2c;
+        --color-input-texto: #e7e1ef;
+        --color-focus: #b399db;
+        --color-boton-secundario-bg: #3a2f47;
+        --color-boton-secundario-texto: #e7e1ef;
+        --color-boton-secundario-hover: #473a57;
+        --color-error: #f28b9d;
+        --color-aviso: #8ee6ad;
+        --color-estado: #d9cce7;
+        --color-icono-hover: #3a2f47;
+        --color-fila-bg: #241d2d;
+        --color-fila-borde: #40334e;
+        --color-rol: #a79bb3;
+        --color-peligro-bg: #4a2630;
+        --color-peligro-texto: #f28b9d;
+        --color-peligro-hover: #5c2e3b;
+      }
+    }
+
+    :root[data-contraste="alto"] {
+      --color-texto: #000 !important;
+      --color-titulo: #000 !important;
+      --color-label: #000 !important;
+      --color-texto-suave: #000 !important;
+      --color-tarjeta-borde: #000 !important;
+      --color-input-borde: #000 !important;
+      --color-etiqueta-borde: #000 !important;
+      --color-acento: #2a0750 !important;
+      --color-acento-hover: #1a0433 !important;
+      --color-tarjeta-bg: #fff !important;
+      --color-input-bg: #fff !important;
+      --color-input-texto: #000 !important;
+      --color-fondo-1: #fff !important;
+      --color-fondo-2: #fff !important;
+      --color-fondo-3: #fff !important;
+      --color-error: #8b0000 !important;
+      --color-aviso: #006400 !important;
+      --color-estado: #000 !important;
+      --color-focus: #000 !important;
+      --color-fila-bg: #fff !important;
+      --color-fila-borde: #000 !important;
+      --color-rol: #000 !important;
+    }
+
+    :root[data-movimiento="reducido"] *,
+    :root[data-movimiento="reducido"] *::before,
+    :root[data-movimiento="reducido"] *::after {
+      transition: none !important;
+      animation: none !important;
+    }
+
+    :root[data-fuente="dislexia"] body {
+      font-family: "Open Dyslexic", system-ui, -apple-system, "Segoe UI", sans-serif;
+    }
+
+    [data-contraste="alto"] .tarjeta,
+    [data-contraste="alto"] .panel-config,
+    [data-contraste="alto"] input,
+    [data-contraste="alto"] .etiqueta,
+    [data-contraste="alto"] .fila-usuario,
+    [data-contraste="alto"] .logo-inicio,
+    [data-contraste="alto"] .logo-secreto,
+    [data-contraste="alto"] .logo-config {
+      border-width: 2px;
     }
 
     * { box-sizing: border-box; }
+
+    html { font-size: calc(16px * var(--tam-texto)); }
 
     body {
       margin: 0;
@@ -22,61 +172,66 @@
       display: flex;
       align-items: flex-start;
       justify-content: center;
+      color: var(--color-texto);
       background:
-        radial-gradient(circle at 8% 6%, #e9dcff 0, transparent 24rem),
-        linear-gradient(180deg, #fbf9ff, #f5f1f9);
+        radial-gradient(circle at 8% 6%, var(--color-fondo-1) 0, transparent 24rem),
+        linear-gradient(180deg, var(--color-fondo-2), var(--color-fondo-3));
+      transition: background .2s ease, color .2s ease;
     }
 
-    .logo-inicio {
+    .logo-inicio, .logo-secreto, .logo-config {
       position: fixed;
       top: 20px;
-      right: 20px;
       display: flex;
       align-items: center;
       justify-content: center;
       width: 48px;
       height: 48px;
-      border: 1px solid #d7c8e7;
+      border: 1px solid var(--color-etiqueta-borde);
       border-radius: 50%;
-      background: #fff;
+      background: var(--color-tarjeta-bg);
       font-size: 1.4rem;
       text-decoration: none;
-      box-shadow: 0 8px 24px #39264e12;
+      box-shadow: 0 8px 24px var(--color-tarjeta-sombra);
       transition: transform .14s ease, background .14s ease;
+      cursor: pointer;
     }
 
-    .logo-inicio:hover { transform: translateY(-2px); background: #f1eafa; }
-    .logo-inicio:focus-visible { outline: 3px solid #aa8ac8; outline-offset: 2px; }
+    .logo-inicio { right: 20px; }
+    .logo-secreto { right: 78px; }
+    .logo-config { left: 20px; border: none; }
 
-    .logo-secreto {
+    .logo-inicio:hover, .logo-secreto:hover, .logo-config:hover { transform: translateY(-2px); background: var(--color-icono-hover); }
+    .logo-inicio:focus-visible, .logo-secreto:focus-visible, .logo-config:focus-visible { outline: 3px solid var(--color-focus); outline-offset: 2px; }
+
+    .panel-config {
       position: fixed;
-      top: 20px;
-      right: 78px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      width: 48px;
-      height: 48px;
-      border: 1px solid #d7c8e7;
-      border-radius: 50%;
-      background: #fff;
-      font-size: 1.4rem;
-      text-decoration: none;
-      box-shadow: 0 8px 24px #39264e12;
-      transition: transform .14s ease, background .14s ease;
+      top: 76px;
+      left: 20px;
+      z-index: 10;
+      width: min(280px, calc(100vw - 40px));
+      padding: 20px;
+      border: 1px solid var(--color-tarjeta-borde);
+      border-radius: 16px;
+      background: var(--color-tarjeta-bg);
+      box-shadow: 0 8px 24px var(--color-tarjeta-sombra);
+      text-align: left;
     }
-
-    .logo-secreto:hover { transform: translateY(-2px); background: #f1eafa; }
-    .logo-secreto:focus-visible { outline: 3px solid #aa8ac8; outline-offset: 2px; }
+    .panel-config[hidden] { display: none; }
+    .panel-config h2 { margin: 0 0 14px; font-size: 1rem; color: var(--color-titulo); }
+    .panel-config .campo { margin-bottom: 14px; }
+    .panel-config .campo:last-child { margin-bottom: 0; }
+    .panel-config select { width: 100%; }
 
     .tarjeta {
       width: min(560px, calc(100% - 32px));
       margin: 32px 0;
       padding: 32px;
-      border: 1px solid #e2d9eb;
+      border: 1px solid var(--color-tarjeta-borde);
       border-radius: 20px;
-      background: #fff;
-      box-shadow: 0 8px 24px #39264e12;
+      background: var(--color-tarjeta-bg);
+      box-shadow: 0 8px 24px var(--color-tarjeta-sombra);
+      transition: background .2s ease, border-color .2s ease;
     }
 
     .etiqueta {
@@ -84,35 +239,35 @@
       align-items: center;
       gap: 8px;
       padding: 7px 12px;
-      border: 1px solid #d7c8e7;
+      border: 1px solid var(--color-etiqueta-borde);
       border-radius: 999px;
-      background: #fff;
-      color: #604777;
+      background: var(--color-tarjeta-bg);
+      color: var(--color-acento);
       font-size: .85rem;
       font-weight: 800;
       letter-spacing: .04em;
       text-transform: uppercase;
     }
 
-    h1 { margin: 16px 0 8px; color: #39264e; font-size: clamp(1.5rem, 5vw, 2rem); line-height: 1.15; }
-    p.intro { margin: 0 0 20px; color: #625b6c; font-size: 1rem; line-height: 1.5; }
+    h1 { margin: 16px 0 8px; color: var(--color-titulo); font-size: clamp(1.5rem, 5vw, 2rem); line-height: 1.15; }
+    p.intro { margin: 0 0 20px; color: var(--color-texto-suave); font-size: 1rem; line-height: 1.5; }
 
     .campo { display: grid; gap: 5px; margin-bottom: 14px; }
-    label { color: #51495d; font-size: .9rem; font-weight: 750; }
+    label { color: var(--color-label); font-size: .9rem; font-weight: 750; }
 
     input { font: inherit; }
 
     input[type="text"], input[type="password"] {
       min-height: 44px;
       padding: 9px 12px;
-      border: 1px solid #cfc4da;
+      border: 1px solid var(--color-input-borde);
       border-radius: 10px;
-      background: white;
-      color: #302a38;
+      background: var(--color-input-bg);
+      color: var(--color-input-texto);
       width: 100%;
     }
 
-    input:focus-visible { outline: 3px solid #aa8ac8; outline-offset: 2px; }
+    input:focus-visible { outline: 3px solid var(--color-focus); outline-offset: 2px; }
 
     .campo-clave { position: relative; }
     .campo-clave input { padding-right: 40px; }
@@ -129,17 +284,17 @@
       background: none;
       font-size: 1.1rem;
       line-height: 1;
-      color: #8a8195;
+      color: var(--color-texto-suave);
       cursor: pointer;
     }
-    .boton-ver-clave:hover { color: #604777; transform: translateY(-50%); background: none; }
+    .boton-ver-clave:hover { color: var(--color-acento); transform: translateY(-50%); background: none; }
 
     button {
       min-height: 44px;
       padding: 9px 16px;
       border: 0;
       border-radius: 10px;
-      background: #604777;
+      background: var(--color-acento);
       color: white;
       font-weight: 750;
       font: inherit;
@@ -147,14 +302,14 @@
       transition: transform .14s ease, background .14s ease;
     }
 
-    button:hover { transform: translateY(-1px); background: #4c3562; }
-    button:focus-visible { outline: 3px solid #aa8ac8; outline-offset: 2px; }
-    button.secundario { background: #eee8f4; color: #40334e; }
-    button.secundario:hover { background: #e2d8ec; }
+    button:hover { transform: translateY(-1px); background: var(--color-acento-hover); }
+    button:focus-visible { outline: 3px solid var(--color-focus); outline-offset: 2px; }
+    button.secundario { background: var(--color-boton-secundario-bg); color: var(--color-boton-secundario-texto); }
+    button.secundario:hover { background: var(--color-boton-secundario-hover); }
 
-    .error { min-height: 1.2em; margin: 6px 0 0; color: #a32939; font-size: .85rem; font-weight: 700; }
-    .aviso { min-height: 1.2em; margin: 6px 0 0; color: #168348; font-size: .85rem; font-weight: 700; }
-    .estado-sesion { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 20px; padding-bottom: 16px; border-bottom: 1px dashed #e2d9eb; color: #46315c; font-weight: 750; font-size: .95rem; }
+    .error { min-height: 1.2em; margin: 6px 0 0; color: var(--color-error); font-size: .85rem; font-weight: 700; }
+    .aviso { min-height: 1.2em; margin: 6px 0 0; color: var(--color-aviso); font-size: .85rem; font-weight: 700; }
+    .estado-sesion { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 20px; padding-bottom: 16px; border-bottom: 1px dashed var(--color-tarjeta-borde); color: var(--color-estado); font-weight: 750; font-size: .95rem; }
 
     .lista-usuarios { display: grid; gap: 10px; margin: 0 0 24px; padding: 0; list-style: none; }
     .fila-usuario {
@@ -163,19 +318,19 @@
       align-items: center;
       gap: 10px;
       padding: 10px 14px;
-      border: 1px solid #e5ddec;
+      border: 1px solid var(--color-fila-borde);
       border-radius: 12px;
-      background: #faf8fc;
+      background: var(--color-fila-bg);
     }
-    .fila-usuario .nombre { font-weight: 750; color: #39264e; }
-    .fila-usuario .rol { color: #8a8195; font-size: .82rem; }
+    .fila-usuario .nombre { font-weight: 750; color: var(--color-titulo); }
+    .fila-usuario .rol { color: var(--color-rol); font-size: .82rem; }
     .fila-usuario input { min-height: 38px; width: 150px; }
     .fila-usuario button { min-height: 38px; padding: 7px 10px; font-size: .85rem; }
-    .fila-usuario button.peligro { background: #fde8e8; color: #a32939; }
-    .fila-usuario button.peligro:hover { background: #fad1d1; }
+    .fila-usuario button.peligro { background: var(--color-peligro-bg); color: var(--color-peligro-texto); }
+    .fila-usuario button.peligro:hover { background: var(--color-peligro-hover); }
 
-    .seccion { margin-top: 22px; padding-top: 18px; border-top: 1px dashed #e2d9eb; }
-    .seccion h2 { margin: 0 0 10px; color: #39264e; font-size: 1.1rem; }
+    .seccion { margin-top: 22px; padding-top: 18px; border-top: 1px dashed var(--color-tarjeta-borde); }
+    .seccion h2 { margin: 0 0 10px; color: var(--color-titulo); font-size: 1.1rem; }
 
     @media (max-width: 580px) {
       .fila-usuario { grid-template-columns: 1fr; }
@@ -186,6 +341,48 @@
 <body>
   <a href="inicio.html" class="logo-inicio" title="Volver al inicio" aria-label="Volver al inicio">🏠</a>
   <a href="https://marconevi-lab.github.io/Portal-secreto-edumath/secreto.html" class="logo-secreto" title="Crear usuario (acceso secreto)" aria-label="Crear usuario (acceso secreto)">🔒</a>
+  <button type="button" class="logo-config" id="boton-config" title="Configuración" aria-label="Configuración">⚙️</button>
+
+  <div class="panel-config" id="panel-config" hidden>
+    <h2>⚙️ Configuración</h2>
+    <div class="campo">
+      <label for="select-tema">Tema</label>
+      <select id="select-tema">
+        <option value="auto">Automático</option>
+        <option value="light">Claro</option>
+        <option value="dark">Oscuro</option>
+      </select>
+    </div>
+    <div class="campo">
+      <label for="select-tamano">Tamaño de texto</label>
+      <select id="select-tamano">
+        <option value="normal">Normal</option>
+        <option value="grande">Grande</option>
+      </select>
+    </div>
+    <div class="campo">
+      <label for="select-contraste">Contraste</label>
+      <select id="select-contraste">
+        <option value="normal">Normal</option>
+        <option value="alto">Alto contraste</option>
+      </select>
+    </div>
+    <div class="campo">
+      <label for="select-fuente">Fuente</label>
+      <select id="select-fuente">
+        <option value="normal">Normal</option>
+        <option value="dislexia">Apta para dislexia</option>
+      </select>
+    </div>
+    <div class="campo">
+      <label for="select-movimiento">Animaciones</label>
+      <select id="select-movimiento">
+        <option value="normal">Activadas</option>
+        <option value="reducido">Reducidas</option>
+      </select>
+    </div>
+    <button type="button" id="boton-restablecer" class="secundario" style="width: 100%;">🔄 Restablecer progreso</button>
+  </div>
 
   <div class="tarjeta">
     <span class="etiqueta">👤 Gestión de usuarios</span>
@@ -397,6 +594,92 @@
 
     cargarUsuarios();
     pintarSesion();
+
+    // Configuración (tema, tamaño, contraste, fuente, animaciones), compartida visualmente con inicio.html.
+    const CLAVE_CONFIG = "edu-config-inicio";
+
+    function cargarConfig() {
+      try {
+        const guardado = JSON.parse(localStorage.getItem(CLAVE_CONFIG));
+        if (guardado && typeof guardado === "object") return guardado;
+      } catch {}
+      return { tema: "auto", tamano: "normal", contraste: "normal", fuente: "normal", movimiento: "normal" };
+    }
+
+    function guardarConfig(config) {
+      localStorage.setItem(CLAVE_CONFIG, JSON.stringify(config));
+    }
+
+    function aplicarConfig(config) {
+      const raiz = document.documentElement;
+
+      if (config.tema === "light" || config.tema === "dark") {
+        raiz.setAttribute("data-theme", config.tema);
+      } else {
+        raiz.removeAttribute("data-theme");
+      }
+
+      raiz.style.setProperty("--tam-texto", config.tamano === "grande" ? "1.15" : "1");
+
+      if (config.contraste === "alto") raiz.setAttribute("data-contraste", "alto");
+      else raiz.removeAttribute("data-contraste");
+
+      if (config.fuente === "dislexia") raiz.setAttribute("data-fuente", "dislexia");
+      else raiz.removeAttribute("data-fuente");
+
+      if (config.movimiento === "reducido") raiz.setAttribute("data-movimiento", "reducido");
+      else raiz.removeAttribute("data-movimiento");
+    }
+
+    const selectTema = document.querySelector("#select-tema");
+    const selectTamano = document.querySelector("#select-tamano");
+    const selectContraste = document.querySelector("#select-contraste");
+    const selectFuente = document.querySelector("#select-fuente");
+    const selectMovimiento = document.querySelector("#select-movimiento");
+    const botonConfig = document.querySelector("#boton-config");
+    const panelConfig = document.querySelector("#panel-config");
+    const botonRestablecer = document.querySelector("#boton-restablecer");
+
+    let config = cargarConfig();
+    selectTema.value = config.tema;
+    selectTamano.value = config.tamano;
+    selectContraste.value = config.contraste;
+    selectFuente.value = config.fuente;
+    selectMovimiento.value = config.movimiento;
+    aplicarConfig(config);
+
+    botonConfig.addEventListener("click", () => {
+      panelConfig.hidden = !panelConfig.hidden;
+    });
+
+    document.addEventListener("click", (e) => {
+      if (!panelConfig.hidden && !panelConfig.contains(e.target) && e.target !== botonConfig) {
+        panelConfig.hidden = true;
+      }
+    });
+
+    function escucharCambio(select, campo) {
+      select.addEventListener("change", () => {
+        config[campo] = select.value;
+        guardarConfig(config);
+        aplicarConfig(config);
+      });
+    }
+
+    escucharCambio(selectTema, "tema");
+    escucharCambio(selectTamano, "tamano");
+    escucharCambio(selectContraste, "contraste");
+    escucharCambio(selectFuente, "fuente");
+    escucharCambio(selectMovimiento, "movimiento");
+
+    botonRestablecer.addEventListener("click", () => {
+      const confirmado = confirm("Esto borrará el progreso guardado en este navegador (ejercicios completados). No afecta a tu cuenta ni contraseña. ¿Continuar?");
+      if (!confirmado) return;
+      Object.keys(localStorage)
+        .filter((clave) => /progreso/i.test(clave))
+        .forEach((clave) => localStorage.removeItem(clave));
+      alert("Progreso restablecido.");
+    });
   </script>
 </body>
 </html>
