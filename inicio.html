@@ -306,7 +306,7 @@
     // Permite iniciar sesión automáticamente cuando se llega desde el
     // servidor de prueba (secreto.html), sin exponer la contraseña en la URL.
     window.addEventListener("message", (event) => {
-      if (!/^https?:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/.test(event.origin)) return;
+      if (!/^https?:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/.test(event.origin) && event.origin !== "https://marconevi-lab.github.io") return;
       const data = event.data;
       if (!data || data.tipo !== "edu-login") return;
 
@@ -324,7 +324,7 @@
     // Permite crear una cuenta nueva desde el servidor de prueba (secreto.html)
     // e iniciar sesión con ella automáticamente.
     window.addEventListener("message", (event) => {
-      if (!/^https?:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/.test(event.origin)) return;
+      if (!/^https?:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/.test(event.origin) && event.origin !== "https://marconevi-lab.github.io") return;
       const data = event.data;
       if (!data || data.tipo !== "edu-registro") return;
 
